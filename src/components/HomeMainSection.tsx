@@ -38,8 +38,7 @@ function HomeMainSection() {
         setRepoData([url])
       }
     }
-  }, [currentUrl,dispatch])
-
+  }, [currentUrl, repos])
 
   return (
     <main>

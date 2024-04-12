@@ -32,16 +32,8 @@ export const repoSlice = createAppSlice({
     }),
     editIssuesArr:create.reducer((state,action:PayloadAction<Issues>) => {
       const { url, newIssues } = action.payload;
-      state.repos = state.repos.map(repo => {
-        if (repo.url === url) {
-          // Create a new object with the updated issues array
-          return {
-            ...repo,
-            issues: [...newIssues]
-          };
-        }
-        return repo;
-      });
+      const result = state.repos.findIndex(el => el.url === url)
+      state.repos[result].issues = newIssues
     }),
     getRepoAsync: create.asyncThunk(
       async (url: string, { rejectWithValue }) => {
