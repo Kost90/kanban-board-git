@@ -1,14 +1,10 @@
 import {
   DndContext,
   DragEndEvent,
-  DragOverEvent,
   DragOverlay,
   DragStartEvent,
-  PointerSensor,
-  useSensor,
-  useSensors,
 } from "@dnd-kit/core"
-import { SortableContext, arrayMove, useSortable } from "@dnd-kit/sortable"
+import { SortableContext, arrayMove} from "@dnd-kit/sortable"
 import { Box, Grid, Heading } from "@chakra-ui/react"
 import { Key, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
@@ -16,7 +12,6 @@ import Column from "./Column"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
   editIssuesArr,
-  selectRepo,
   selectUrl,
 } from "../../features/repos/reposSlice"
 
@@ -28,7 +23,10 @@ type MapElParams = {
 function ColumnsContainer({ data }: { data: any }) {
   const currentUrl = useAppSelector(selectUrl)
   const dispatch = useAppDispatch()
+
+  // Id for Sorteble context
   const columnsId = useMemo(() => data.map((col: any) => col.name), [data])
+
   const [activeCol, setActiveClo] = useState<any>(null)
   const [activeName, setActiveName] = useState<any>(null)
   const [newArray, setNewArray] = useState<any>([])
@@ -66,7 +64,7 @@ function ColumnsContainer({ data }: { data: any }) {
 
   return (
     <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-      <Grid templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]} gap={6}>
+      <Grid templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]} gap={6} position="relative">
         <SortableContext items={columnsId}>
           <>
             {data === null && data === undefined ? (

@@ -1,4 +1,6 @@
-export function CheckIfExistRepo(repo: any[], url: string) {
+import { IReposData } from "../app/types"
+
+export function CheckIfExistRepo(repo: IReposData[], url: string) {
   const result = repo.find(el => el.url === url)
   if (result !== undefined) {
     return result
@@ -7,7 +9,7 @@ export function CheckIfExistRepo(repo: any[], url: string) {
   }
 }
 
-export function getOwnerRepoName(repoArr: any[], url: string | null) {
+export function getOwnerRepoName(repoArr: IReposData[], url: string | null) {
   if (url !== null) {
     const result = repoArr.find(el => el.url === url)
     if (result !== undefined) {

@@ -1,13 +1,13 @@
 import { Octokit } from "octokit"
 
-enum IssuesName {
+export enum IssuesName {
   open = "Todo",
   assignee = "In Progress",
   closed = "Closed",
 }
+
 const octokit = new Octokit()
 
-// TODO:Create anaotation for received promise issues
 // Function for fetching issues from GithubAPI
 export async function FetchRepiIssues(url: string) {
   const { owner, repo } = urlSpliter(url)
@@ -35,7 +35,7 @@ export async function FetchRepiIssues(url: string) {
 
     return newRepo
   } catch (error) {
-    throw new Error("Failed to fetch repository issues");
+    throw new Error("Failed to fetch repository issues")
   }
 }
 

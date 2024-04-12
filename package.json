@@ -21,6 +21,7 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@octokit/types": "^13.4.0",
     "@reduxjs/toolkit": "^2.0.1",
     "framer-motion": "^11.0.25",
     "octokit": "^3.2.0",

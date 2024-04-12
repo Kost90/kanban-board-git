@@ -8,14 +8,10 @@ import {
 } from "../../features/repos/reposSlice"
 import { getOwnerRepoName } from "../../utils/IssuesSort"
 import { useEffect, useState } from "react"
-
-type Repo = {
-  owner: string
-  repoName: string
-}
+import { BredcrumbRepoNames } from "../../app/types"
 
 function BreadCrumb() {
-  const [repo, setRepo] = useState<Repo | null>(null)
+  const [repo, setRepo] = useState<BredcrumbRepoNames | null>(null)
   const repos = useAppSelector(selectRepo)
   const url = useAppSelector(selectUrl)
   const status = useAppSelector(selectStatus)

@@ -2,8 +2,11 @@ import SearchInput from "./ui/SearchInput"
 import { Button, Flex, Spacer } from "@chakra-ui/react"
 import { useAppDispatch } from "../app/hooks"
 import { addUrl } from "../features/repos/reposSlice"
+import { selectStatus } from "../features/repos/reposSlice"
+import { useAppSelector } from "../app/hooks"
 
 function SearchForm() {
+  const status = useAppSelector(selectStatus)
   const dispatch = useAppDispatch()
   const handelSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -21,6 +24,8 @@ function SearchForm() {
           type="submit"
           fontSize={["smaller", "small", "medium"]}
           colorScheme="teal"
+          isLoading={status === "loading"}
+          loadingText="Loading..."
         >
           Load issues
         </Button>
