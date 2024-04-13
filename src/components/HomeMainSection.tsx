@@ -36,7 +36,7 @@ function HomeMainSection() {
   }, [currentUrl, repos])
 
   return (
-    <main>
+    <main data-testid="home-main-section-component">
       <Box my={"24px"} mx={"auto"}>
         {status === "loading" ? (
           <Spinner mx={"auto"} size={["sm", "md", "lg", "xl"]} />

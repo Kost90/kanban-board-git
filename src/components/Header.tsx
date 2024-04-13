@@ -3,7 +3,7 @@ import BreadCrumb from "./ui/BreadCrumb"
 
 function Header() {
   return (
-    <header>
+    <header data-testid="header-component">
       <SearchForm />
       <BreadCrumb />
     </header>

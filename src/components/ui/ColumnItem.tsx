@@ -28,19 +28,14 @@ function ColumnItem({ issues }: { issues: any }) {
 
   if (isDragging) {
     return (
-      <Card
-        cursor="pointer"
-        minW={"100%"}
-        ref={setNodeRef}
-        style={style}
-      ></Card>
+      <Card cursor="pointer" w="100%" ref={setNodeRef} style={style}></Card>
     )
   }
 
   return (
     <Card
       cursor="pointer"
-      minW={"100%"}
+      w="100%"
       ref={setNodeRef}
       style={style}
       {...attributes}
