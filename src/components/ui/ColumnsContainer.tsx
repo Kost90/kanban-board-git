@@ -1,7 +1,6 @@
 import {
   DndContext,
   DragEndEvent,
-  DragOverEvent,
   DragOverlay,
   DragStartEvent,
 } from "@dnd-kit/core"
@@ -59,44 +58,29 @@ function ColumnsContainer({ data }: { data: any }) {
     const overColumnId = over.id
 
     if (activeColid === overColumnId) return
-    const activeColumnIndex = data.findIndex(
-      (col: any) => col.name === activeColid,
-    )
-    const overColumnIndex = data.findIndex(
-      (col: any) => col.name === overColumnId,
-    )
-    const result = arrayMove(data, activeColumnIndex, overColumnIndex)
-    setNewArray(result)
-  }
 
-  // Drag Over Function
-  function onDragOver(e: DragOverEvent) {
-    const { active, over } = e
-    if (!over) return
-
-    const activeId = active.id
-    const overId = over.id
-
-    if (activeId === overId) return
-
-    const isActiveIssue = active.data.current?.type === "Issue"
-    const isOverIssue = over.data.current?.type === "Issue"
-
-    if (!isActiveIssue) return
-
-    if (isActiveIssue && isOverIssue) {
-      const activeIssueIndex = data.issues.findIndex(
-        (col: any) => col.id === isActiveIssue,
+    if (e.active.data.current?.type === "Column") {
+      const activeColumnIndex = data.findIndex(
+        (col: any) => col.name === activeColid,
       )
-      const overIssueIndex = data.issues.findIndex(
-        (col: any) => col.id === isOverIssue,
+      const overColumnIndex = data.findIndex(
+        (col: any) => col.name === overColumnId,
       )
+      const result = arrayMove(data, activeColumnIndex, overColumnIndex)
+      setNewArray(result)
+    }
 
-      const result = arrayMove(
-        data.issues[activeIssueIndex],
-        activeIssueIndex,
-        overIssueIndex,
+    if (e.active.data.current?.type === "Issue") {
+      const issueArr = data.map((el: any) => el.issues)
+      // TODO:I need to change special array TODO/InProgress/Closed
+      const activeIssueIndex = issueArr.findIndex(
+        (el: any) => el.id === activeColid,
       )
+      const overIssuesIndex = issueArr.findIndex(
+        (el: any) => el.id === overColumnId,
+      )
+      const result = arrayMove(issueArr, activeIssueIndex, overIssuesIndex)
+      console.log(result)
       setNewArrayIssues(result)
     }
   }
@@ -108,11 +92,7 @@ function ColumnsContainer({ data }: { data: any }) {
   }, [activeCol, newArray])
 
   return (
-    <DndContext
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onDragOver={onDragOver}
-    >
+    <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <Grid
         templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]}
         gap={6}
