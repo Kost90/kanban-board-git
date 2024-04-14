@@ -10,7 +10,11 @@ import { Key, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 import Column from "./Column"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { editIssuesArr, editIssuesOrder, selectUrl } from "../../features/repos/reposSlice"
+import {
+  editIssuesArr,
+  editIssuesOrder,
+  selectUrl,
+} from "../../features/repos/reposSlice"
 import ColumnItem from "./ColumnItem"
 import {
   findElementById,
@@ -37,9 +41,10 @@ function ColumnsContainer({ data }: { data: any }) {
 
   // State for issues
   const [activeIssue, setActiveIssue] = useState<any>(null)
-  const [name,setName] = useState<string>('')
+  const [name, setName] = useState<string>("")
   const [newArrayIssues, setNewArrayIssues] = useState<any>([])
 
+  // Function for start dragable
   function onDragStart(e: DragStartEvent) {
     if (e.active.data.current?.type === "Column") {
       setActiveClo(e.active.data.current.column)
@@ -76,39 +81,53 @@ function ColumnsContainer({ data }: { data: any }) {
       setNewArray(result)
     }
 
+    // Logic for end of dragable Issues and save it to the state
     if (e.active.data.current?.type === "Issue") {
       const issueArr = data.filter((el: any) => {
         return e.active.data.current?.sortable.items.length === el.issues.length
       })
 
+      // Found index of parent arr, children arr and name of column where Issue is dragable
       const activeIssueIndex = findElementById(issueArr, activeColid)
       const overIssuesIndex = findElementById(issueArr, overColumnId)
 
+      // Save index and name of column to the constans
       const parentArrayIndex = activeIssueIndex?.i
       const ActiveIndexchldArr = activeIssueIndex?.j as number
       const OverIndexchldArr = overIssuesIndex?.j as number
       const columnName = activeIssueIndex?.name as string
-      
+
+      // Change array of special issues
       const result = arrayMove(
         issueArr[parentArrayIndex as number].issues,
         ActiveIndexchldArr,
         OverIndexchldArr,
       )
+
+      // Updating parent Array with updated array with issues.
       const newArrOfIssues = updateIssuesArrayByTagName(
         data,
         columnName,
         result,
       )
+
       setName(columnName)
       setNewArrayIssues(newArrOfIssues)
     }
   }
 
+  // Update Redux store by dragable column and issues in column
   useEffect(() => {
     if (newArray.length !== 0 && newArray !== undefined) {
       dispatch(editIssuesArr({ url: currentUrl, newIssues: newArray }))
-    } else if(newArrayIssues.length !== 0 && newArrayIssues !== undefined){
-      dispatch(editIssuesOrder({ url: currentUrl, newIssues: newArrayIssues, name: name }))
+    } else if (newArrayIssues.length !== 0 && newArrayIssues !== undefined) {
+      dispatch(
+        editIssuesOrder({
+          url: currentUrl,
+          newIssues: newArrayIssues,
+          name: name,
+        }),
+      )
     }
   }, [activeCol, newArray, newArrayIssues])
 

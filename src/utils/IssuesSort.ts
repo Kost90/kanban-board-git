@@ -32,6 +32,7 @@ export function daysAgo(taskOpenTime: string) {
   return daysAgo
 }
 
+// Function for find the issue by passed to the parametrs id and return index of parent arr, index of children arr and element that containe the id
 export function findElementById(issuesArray: any[], id: any) {
   for (let i = 0; i < issuesArray.length; i++) {
     const issue = issuesArray[i]
@@ -51,6 +52,7 @@ export function findElementById(issuesArray: any[], id: any) {
   return null
 }
 
+// Function for updating main arrai with updated array with issues.
 export function updateIssuesArrayByTagName(
   dataArray: any[],
   newName: string,
