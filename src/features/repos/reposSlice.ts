@@ -3,9 +3,11 @@ import { createAppSlice } from "../../app/createAppSlice"
 import type { AppThunk } from "../../app/store"
 import { FetchRepiIssues } from "../../api/github-api"
 
+// TODO:Need to change
 type Issues = {
   url: string | null
   newIssues: any[]
+  name?: string
 }
 
 // TODO:Make anotation for fetched object
@@ -30,10 +32,20 @@ export const repoSlice = createAppSlice({
     addUrl: create.reducer((state, action: PayloadAction<string>) => {
       state.currentUrl = action.payload
     }),
-    editIssuesArr:create.reducer((state,action:PayloadAction<Issues>) => {
-      const { url, newIssues } = action.payload;
+    editIssuesArr: create.reducer((state, action: PayloadAction<Issues>) => {
+      const { url, newIssues } = action.payload
       const result = state.repos.findIndex(el => el.url === url)
       state.repos[result].issues = newIssues
+    }),
+    editIssuesOrder: create.reducer((state, action: PayloadAction<Issues>) => {
+      const { url, newIssues, name } = action.payload
+      const ArrayIndex = state.repos.findIndex(el => el.url === url)
+      const childArray = state.repos[ArrayIndex].issues.findIndex(
+        (el: any) => el.name === name,
+      )
+      if (state.repos[ArrayIndex].issues[childArray].name === name) {
+        state.repos[ArrayIndex].issues = newIssues
+      }
     }),
     getRepoAsync: create.asyncThunk(
       async (url: string, { rejectWithValue }) => {
@@ -72,7 +84,13 @@ export const repoSlice = createAppSlice({
   },
 })
 
-export const { addUrl, getRepoAsync, setStatus, editIssuesArr } = repoSlice.actions
+export const {
+  addUrl,
+  getRepoAsync,
+  setStatus,
+  editIssuesArr,
+  editIssuesOrder,
+} = repoSlice.actions
 
 export const { selectRepo, selectStatus, selectUrl, selectError } =
   repoSlice.selectors

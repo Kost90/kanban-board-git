@@ -10,8 +10,12 @@ import { Key, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 import Column from "./Column"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { editIssuesArr, selectUrl } from "../../features/repos/reposSlice"
+import { editIssuesArr, editIssuesOrder, selectUrl } from "../../features/repos/reposSlice"
 import ColumnItem from "./ColumnItem"
+import {
+  findElementById,
+  updateIssuesArrayByTagName,
+} from "../../utils/IssuesSort"
 
 type MapElParams = {
   name: string
@@ -19,6 +23,7 @@ type MapElParams = {
 }
 
 function ColumnsContainer({ data }: { data: any }) {
+  console.log(data)
   const currentUrl = useAppSelector(selectUrl)
   const dispatch = useAppDispatch()
 
@@ -32,6 +37,7 @@ function ColumnsContainer({ data }: { data: any }) {
 
   // State for issues
   const [activeIssue, setActiveIssue] = useState<any>(null)
+  const [name,setName] = useState<string>('')
   const [newArrayIssues, setNewArrayIssues] = useState<any>([])
 
   function onDragStart(e: DragStartEvent) {
@@ -71,25 +77,40 @@ function ColumnsContainer({ data }: { data: any }) {
     }
 
     if (e.active.data.current?.type === "Issue") {
-      const issueArr = data.map((el: any) => el.issues)
-      // TODO:I need to change special array TODO/InProgress/Closed
-      const activeIssueIndex = issueArr.findIndex(
-        (el: any) => el.id === activeColid,
+      const issueArr = data.filter((el: any) => {
+        return e.active.data.current?.sortable.items.length === el.issues.length
+      })
+
+      const activeIssueIndex = findElementById(issueArr, activeColid)
+      const overIssuesIndex = findElementById(issueArr, overColumnId)
+
+      const parentArrayIndex = activeIssueIndex?.i
+      const ActiveIndexchldArr = activeIssueIndex?.j as number
+      const OverIndexchldArr = overIssuesIndex?.j as number
+      const columnName = activeIssueIndex?.name as string
+      
+      const result = arrayMove(
+        issueArr[parentArrayIndex as number].issues,
+        ActiveIndexchldArr,
+        OverIndexchldArr,
       )
-      const overIssuesIndex = issueArr.findIndex(
-        (el: any) => el.id === overColumnId,
+      const newArrOfIssues = updateIssuesArrayByTagName(
+        data,
+        columnName,
+        result,
       )
-      const result = arrayMove(issueArr, activeIssueIndex, overIssuesIndex)
-      console.log(result)
-      setNewArrayIssues(result)
+      setName(columnName)
+      setNewArrayIssues(newArrOfIssues)
     }
   }
 
   useEffect(() => {
     if (newArray.length !== 0 && newArray !== undefined) {
       dispatch(editIssuesArr({ url: currentUrl, newIssues: newArray }))
+    } else if(newArrayIssues.length !== 0 && newArrayIssues !== undefined){
+      dispatch(editIssuesOrder({ url: currentUrl, newIssues: newArrayIssues, name: name }))
     }
-  }, [activeCol, newArray])
+  }, [activeCol, newArray, newArrayIssues])
 
   return (
     <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>

@@ -21,7 +21,7 @@ function HomeMainSection() {
   const status = useAppSelector(selectStatus)
   const error = useAppSelector(selectError)
   const dispatch = useAppDispatch()
-
+ 
   useEffect(() => {
     if (currentUrl !== null) {
       // Check by url if repository with issues was fetched before and added to the store

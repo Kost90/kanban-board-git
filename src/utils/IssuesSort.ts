@@ -31,3 +31,43 @@ export function daysAgo(taskOpenTime: string) {
   const daysAgo = Math.floor(differenceMs / (1000 * 60 * 60 * 24))
   return daysAgo
 }
+
+export function findElementById(issuesArray: any[], id: any) {
+  for (let i = 0; i < issuesArray.length; i++) {
+    const issue = issuesArray[i]
+    const name = issuesArray[i].name
+
+    if (Array.isArray(issue.issues)) {
+      for (let j = 0; j < issue.issues.length; j++) {
+        const element = issue.issues[j]
+
+        if (element.id === id) {
+          return { element, i, j, name }
+        }
+      }
+    }
+  }
+
+  return null
+}
+
+export function updateIssuesArrayByTagName(
+  dataArray: any[],
+  newName: string,
+  newIssuesArray: any[],
+) {
+  const newArray = dataArray.map(obj => ({ ...obj }))
+
+  for (let i = 0; i < newArray.length; i++) {
+    const obj = newArray[i]
+
+    if (obj.name === newName) {
+      const updatedObj = { ...obj, issues: newIssuesArray }
+
+      newArray[i] = updatedObj
+
+      return newArray
+    }
+  }
+  return false
+}
