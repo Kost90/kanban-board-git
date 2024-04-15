@@ -35,7 +35,7 @@ export async function FetchRepiIssues(url: string) {
 
     return newRepo
   } catch (error) {
-    throw new Error("Failed to fetch repository issues")
+    throw new Error("Failed to fetch repository issues. Example of url: https://github.com/facebook/react")
   }
 }
 

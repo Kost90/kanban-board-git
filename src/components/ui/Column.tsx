@@ -3,7 +3,7 @@ import { SortableContext } from "@dnd-kit/sortable"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import ColumnItem from "./ColumnItem"
-import { Flex, Stack } from "@chakra-ui/react"
+import { Box, Flex, Stack } from "@chakra-ui/react"
 import HeadingComponent from "./HeadTitel"
 
 type MapElParams = {
@@ -43,49 +43,50 @@ function Column({ data, name }: { data: any | null; name: string }) {
 
   if (isDragging) {
     return (
-      <Stack
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="flex-start"
-        spacing={3}
-        bg="gray.200"
-        p="20px"
-        w={["320px", "400px", "480px"]}
+      <Box
         ref={setNodeRef}
         style={style}
+        {...attributes}
+        {...listeners}
         h="600px"
+        bg="gray.100"
         borderRadius="10px"
-      ></Stack>
+        w={["320px", "400px", "480px"]}
+      ></Box>
     )
   }
 
   return (
     <Flex sx={flexBoxStyle}>
       <HeadingComponent text={name} />
-      <Stack
+      <Box
         ref={setNodeRef}
         style={style}
         {...attributes}
         {...listeners}
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="flex-start"
-        bg="gray.200"
-        p="20px"
-        w={["320px", "400px", "480px"]}
         h="600px"
-        overflowY="scroll"
-        py="20px"
-        sx={{ scrollbarWidth: "none" }}
+        bg="gray.100"
         borderRadius="10px"
-        border="1px solid gray.500"
+        w={["320px", "400px", "480px"]}
       >
-        <SortableContext items={IssuesId}>
-          {data.map((el: MapElParams, i: Key | null | undefined) => (
-            <ColumnItem issues={el} key={i} />
-          ))}
-        </SortableContext>
-      </Stack>
+        <Stack
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="flex-start"
+          p="20px"
+          w="100%"
+          maxHeight="580px"
+          overflowY="scroll"
+          py="20px"
+          sx={{ scrollbarWidth: "none" }}
+        >
+          <SortableContext items={IssuesId}>
+            {data.map((el: MapElParams, i: Key | null | undefined) => (
+              <ColumnItem issues={el} key={i} />
+            ))}
+          </SortableContext>
+        </Stack>
+      </Box>
     </Flex>
   )
 }

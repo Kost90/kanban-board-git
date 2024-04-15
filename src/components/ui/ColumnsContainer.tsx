@@ -27,7 +27,6 @@ type MapElParams = {
 }
 
 function ColumnsContainer({ data }: { data: any }) {
-  console.log(data)
   const currentUrl = useAppSelector(selectUrl)
   const dispatch = useAppDispatch()
 
