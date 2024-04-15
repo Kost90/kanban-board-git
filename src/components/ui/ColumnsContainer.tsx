@@ -26,6 +26,7 @@ type MapElParams = {
   issues: any[]
 }
 
+// TODO"Create anotation for issues array from GitHub API
 function ColumnsContainer({ data }: { data: any }) {
   const currentUrl = useAppSelector(selectUrl)
   const dispatch = useAppDispatch()
@@ -34,14 +35,14 @@ function ColumnsContainer({ data }: { data: any }) {
   const columnsId = useMemo(() => data.map((col: any) => col.name), [data])
 
   // State for columns
-  const [activeCol, setActiveClo] = useState<any>(null)
-  const [activeName, setActiveName] = useState<any>(null)
-  const [newArray, setNewArray] = useState<any>([])
+  const [activeCol, setActiveClo] = useState<any | null>(null)
+  const [activeName, setActiveName] = useState<any | null>(null)
+  const [newArray, setNewArray] = useState<any[]>([])
 
   // State for issues
-  const [activeIssue, setActiveIssue] = useState<any>(null)
+  const [activeIssue, setActiveIssue] = useState<any | null>(null)
   const [name, setName] = useState<string>("")
-  const [newArrayIssues, setNewArrayIssues] = useState<any>([])
+  const [newArrayIssues, setNewArrayIssues] = useState<any[] | any>([])
 
   // Function for start dragable
   function onDragStart(e: DragStartEvent) {

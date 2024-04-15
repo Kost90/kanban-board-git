@@ -33,7 +33,7 @@ export function daysAgo(taskOpenTime: string) {
 }
 
 // Function for find the issue by passed to the parametrs id and return index of parent arr, index of children arr and element that containe the id
-export function findElementById(issuesArray: any[], id: any) {
+export function findElementById(issuesArray: any[], id: number | string) {
   for (let i = 0; i < issuesArray.length; i++) {
     const issue = issuesArray[i]
     const name = issuesArray[i].name
