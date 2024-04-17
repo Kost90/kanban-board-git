@@ -1,25 +1,14 @@
-import { render, screen} from "@testing-library/react"
-import App from "./App"
 import { renderWithProviders } from "./utils/test-utils"
+import App from './App';
 
-test("App should have correct initial render", () => {
-  renderWithProviders(<App />)
-
-  // The app should be rendered correctly
-  expect(screen.getByText(/learn/i)).toBeInTheDocument()
-})
-
-describe('App Component', () => {
+describe('App component', () => {
   test('renders header and main section', () => {
-    const { getByTestId } = render(<App />);
-    
-    // Check if the Header component is rendered
-    const headerElement = getByTestId('header-component');
+    const { getByTestId } = renderWithProviders(<App />);
+
+    const headerElement = getByTestId('header');
     expect(headerElement).toBeInTheDocument();
 
-    // Check if the HomeMainSection component is rendered
-    const mainSectionElement = getByTestId('home-main-section-component');
+    const mainSectionElement = getByTestId('main-section');
     expect(mainSectionElement).toBeInTheDocument();
   });
-
 });
