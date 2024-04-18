@@ -21,7 +21,7 @@ function HomeMainSection() {
   const status = useAppSelector(selectStatus)
   const error = useAppSelector(selectError)
   const dispatch = useAppDispatch()
- 
+
   useEffect(() => {
     if (currentUrl !== null) {
       // Check by url if repository with issues was fetched before and added to the store
@@ -42,7 +42,7 @@ function HomeMainSection() {
           <Spinner mx={"auto"} size={["sm", "md", "lg", "xl"]} />
         ) : null}
         {status === "failed" ? <HeadingComponent text={error} /> : null}
-        {currentUrl !== null && status !== "loading" && status !== "failed" ? (
+        {currentUrl !== null && status === "idle" ? (
           <>
             {repoData !== undefined
               ? repoData.map((el, i) => (
